@@ -1,0 +1,25 @@
+# Distributed/parallel SMTS SMT solver configuration
+
+project: smts26
+profile: default
+region: us-east-1
+solver_type: smt
+
+# 10-node cluster: 1 leader + 9 workers
+# For 100-node runs, set num_worker_nodes_per_leader: 99
+
+global_solver_options:
+  ec2_instance_type: m6i.4xlarge
+  disk_size: 64
+
+solvers:
+  - name: smts-distributed
+    is_distributed: true
+    num_worker_nodes_per_leader: 7
+    docker_dir: $SATCOMP_ROOT/aws-build/distributed
+    dockerfile: Dockerfile
+  - name: smts-parallel
+    is_distributed: false
+    num_worker_nodes_per_leader: 0
+    docker_dir: $SATCOMP_ROOT/aws-build/parallel
+    dockerfile: Dockerfile
